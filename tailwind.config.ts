@@ -57,6 +57,9 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        pension: "hsl(var(--pension))",
+        mandatory: "hsl(var(--mandatory))",
+        voluntary: "hsl(var(--voluntary))",
       },
       borderRadius: {
         lg: "var(--radius)",

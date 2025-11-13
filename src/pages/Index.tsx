@@ -76,7 +76,7 @@ const Index = () => {
               <a href="#testimonials" className="text-foreground hover:text-primary transition-colors">
                 Stories
               </a>
-              <Button variant="hero" size="lg" onClick={() => setIsGuideOpen(true)}>
+              <Button variant="hero" size="lg" onClick={() => navigate("/saver-selection")}>
                 Get Started
               </Button>
               {user ? (
@@ -91,7 +91,7 @@ const Index = () => {
               )}
             </div>
             <div className="md:hidden">
-              <Button variant="hero" size="sm" onClick={() => setIsGuideOpen(true)}>
+              <Button variant="hero" size="sm" onClick={() => navigate("/saver-selection")}>
                 Get Started
               </Button>
             </div>

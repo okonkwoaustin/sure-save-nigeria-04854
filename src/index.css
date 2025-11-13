@@ -44,6 +44,11 @@ All colors MUST be HSL.
     --cream: 48 100% 94%;
     --hero-gradient: linear-gradient(135deg, hsl(224 76% 45%), hsl(224 76% 35%));
     --gold-gradient: linear-gradient(135deg, hsl(45 93% 50%), hsl(35 93% 45%));
+    
+    /* Saver Card Colors */
+    --pension: 10 45% 50%;
+    --mandatory: 220 40% 25%;
+    --voluntary: 224 76% 40%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

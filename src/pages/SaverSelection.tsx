@@ -39,9 +39,7 @@ const SaverSelection = () => {
       <div className="space-y-6 px-4 py-8">
         <SaverCard
           type="pension"
-          title="TOTAL PENSION VALUE"
-          userName="ABUBAKRI ADEKUNLE SALAMI"
-          accountNumber="PEN110134210592"
+          title="The Casual Saver – saves randomly"
           balance="250000"
           showBalance={showBalances.pension}
           onToggleBalance={() => toggleBalance("pension")}
@@ -49,7 +47,7 @@ const SaverSelection = () => {
 
         <SaverCard
           type="mandatory"
-          title="MANDATORY CONTRIBUTION"
+          title="The Goal Getter – saves toward specific goals"
           balance="150000"
           showBalance={showBalances.mandatory}
           onToggleBalance={() => toggleBalance("mandatory")}
@@ -57,7 +55,7 @@ const SaverSelection = () => {
 
         <SaverCard
           type="voluntary"
-          title="VOLUNTARY CONTRIBUTION"
+          title="The Showcase Saver – saves while showcasing their craft or business"
           balance="100000"
           showBalance={showBalances.voluntary}
           onToggleBalance={() => toggleBalance("voluntary")}

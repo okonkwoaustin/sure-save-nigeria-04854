@@ -2,14 +2,30 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Home, HelpCircle, Info, Clock, Grid3x3 } from "lucide-react";
+import { ArrowLeft, Home, HelpCircle, Info, Clock, Grid3x3, ChevronDown } from "lucide-react";
 import suresaveLogo from "@/assets/suresave-logo.jpg";
 import { toast } from "@/hooks/use-toast";
+import { SaverCard } from "@/components/SaverCard";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const [showBalances, setShowBalances] = useState({
+    pension: false,
+    mandatory: false,
+    voluntary: false,
+  });
+
+  const toggleBalance = (type: keyof typeof showBalances) => {
+    setShowBalances((prev) => ({ ...prev, [type]: !prev[type] }));
+  };
 
   useEffect(() => {
     const checkAuthAndFetchProfile = async () => {
@@ -23,7 +39,7 @@ const Dashboard = () => {
         }
 
         // Fetch user profile
-        const { data: profile, error } = await supabase
+        const { data: profile, error } = await (supabase as any)
           .from("profiles")
           .select("first_name")
           .eq("id", session.user.id)
@@ -108,31 +124,134 @@ const Dashboard = () => {
       </div>
 
       {/* Welcome Section */}
-      <div className="px-4 py-12">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-white">
+      <div className="px-4 py-8">
+        <div className="text-center space-y-2 mb-8">
+          <h1 className="text-3xl font-bold text-white">
             Welcome, {firstName}!
           </h1>
-          <p className="text-white/80 text-lg">
-            Start your savings journey today
+          <p className="text-white/80">
+            Manage your savings wallets
           </p>
         </div>
 
-        {/* Quick Stats - Placeholder for future features */}
-        <div className="mt-12 space-y-4">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
-            <h3 className="text-sm font-semibold uppercase tracking-wider mb-2">
-              Total Savings
-            </h3>
-            <p className="text-3xl font-bold">₦0.00</p>
-          </div>
+        {/* Saver Cards */}
+        <div className="space-y-4 pb-24">
+          {/* Casual Saver */}
+          <Collapsible
+            open={expandedCard === "pension"}
+            onOpenChange={() => setExpandedCard(expandedCard === "pension" ? null : "pension")}
+          >
+            <div className="space-y-2">
+              <SaverCard
+                type="pension"
+                title="The Casual Saver"
+                userName={firstName.toUpperCase()}
+                accountNumber="1234567890"
+                balance="250000"
+                showBalance={showBalances.pension}
+                onToggleBalance={() => toggleBalance("pension")}
+              />
+              <CollapsibleContent className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 space-y-3 animate-accordion-down">
+                <div className="text-white space-y-2">
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Description:</span> Save randomly without a specific goal
+                  </p>
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Last Transaction:</span> ₦5,000 - 2 days ago
+                  </p>
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Total Deposits:</span> 12 transactions
+                  </p>
+                </div>
+                <div className="flex gap-2 pt-2">
+                  <Button className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/20">
+                    View Details
+                  </Button>
+                  <Button className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/20">
+                    Switch Wallet
+                  </Button>
+                </div>
+              </CollapsibleContent>
+            </div>
+          </Collapsible>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
-            <h3 className="text-sm font-semibold uppercase tracking-wider mb-2">
-              Active Goals
-            </h3>
-            <p className="text-3xl font-bold">0</p>
-          </div>
+          {/* Goal Getter */}
+          <Collapsible
+            open={expandedCard === "mandatory"}
+            onOpenChange={() => setExpandedCard(expandedCard === "mandatory" ? null : "mandatory")}
+          >
+            <div className="space-y-2">
+              <SaverCard
+                type="mandatory"
+                title="The Goal Getter"
+                userName={firstName.toUpperCase()}
+                accountNumber="0987654321"
+                balance="150000"
+                showBalance={showBalances.mandatory}
+                onToggleBalance={() => toggleBalance("mandatory")}
+              />
+              <CollapsibleContent className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 space-y-3 animate-accordion-down">
+                <div className="text-white space-y-2">
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Description:</span> Save toward specific financial goals
+                  </p>
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Active Goal:</span> New Laptop - 75% complete
+                  </p>
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Target Amount:</span> ₦200,000
+                  </p>
+                </div>
+                <div className="flex gap-2 pt-2">
+                  <Button className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/20">
+                    View Details
+                  </Button>
+                  <Button className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/20">
+                    Switch Wallet
+                  </Button>
+                </div>
+              </CollapsibleContent>
+            </div>
+          </Collapsible>
+
+          {/* Showcase Saver */}
+          <Collapsible
+            open={expandedCard === "voluntary"}
+            onOpenChange={() => setExpandedCard(expandedCard === "voluntary" ? null : "voluntary")}
+          >
+            <div className="space-y-2">
+              <SaverCard
+                type="voluntary"
+                title="The Showcase Saver"
+                userName={firstName.toUpperCase()}
+                accountNumber="5555666677"
+                balance="100000"
+                showBalance={showBalances.voluntary}
+                onToggleBalance={() => toggleBalance("voluntary")}
+              />
+              <CollapsibleContent className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 space-y-3 animate-accordion-down">
+                <div className="text-white space-y-2">
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Description:</span> Save while showcasing your craft or business
+                  </p>
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Business:</span> Artisan Crafts
+                  </p>
+                  <p className="text-sm opacity-90">
+                    <span className="font-semibold">Showcase Link:</span> suresave.com/showcase
+                  </p>
+                </div>
+                <div className="flex gap-2 pt-2">
+                  <Button className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/20">
+                    View Details
+                  </Button>
+                  <Button className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/20">
+                    Switch Wallet
+                  </Button>
+                </div>
+              </CollapsibleContent>
+            </div>
+          </Collapsible>
         </div>
       </div>
 

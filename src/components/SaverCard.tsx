@@ -10,6 +10,7 @@ interface SaverCardProps {
   balance: string;
   showBalance: boolean;
   onToggleBalance: () => void;
+  onClick?: () => void;
 }
 
 export const SaverCard = ({
@@ -20,6 +21,7 @@ export const SaverCard = ({
   balance,
   showBalance,
   onToggleBalance,
+  onClick,
 }: SaverCardProps) => {
   const bgColors = {
     pension: "bg-pension",
@@ -30,9 +32,10 @@ export const SaverCard = ({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl p-6 text-white shadow-lg transition-transform hover:scale-[1.02]",
+        "relative overflow-hidden rounded-3xl p-6 text-white shadow-lg transition-transform hover:scale-[1.02] cursor-pointer",
         bgColors[type]
       )}
+      onClick={onClick}
     >
       {/* Decorative Pattern */}
       <div className="absolute right-4 top-4 opacity-10">
@@ -67,7 +70,10 @@ export const SaverCard = ({
               variant="ghost"
               size="icon"
               className="h-12 w-12 rounded-full bg-white/20 hover:bg-white/30"
-              onClick={onToggleBalance}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleBalance();
+              }}
             >
               <Eye className="h-6 w-6" />
             </Button>
@@ -76,7 +82,10 @@ export const SaverCard = ({
               variant="ghost"
               size="sm"
               className="bg-white/20 text-white hover:bg-white/30 hover:text-white"
-              onClick={onToggleBalance}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleBalance();
+              }}
             >
               {showBalance ? "HIDE BALANCE" : "SHOW BALANCE"}
             </Button>

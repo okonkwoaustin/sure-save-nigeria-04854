@@ -43,6 +43,7 @@ const SaverSelection = () => {
           balance="250000"
           showBalance={showBalances.pension}
           onToggleBalance={() => toggleBalance("pension")}
+          onClick={() => navigate("/auth")}
         />
 
         <SaverCard
@@ -51,6 +52,7 @@ const SaverSelection = () => {
           balance="150000"
           showBalance={showBalances.mandatory}
           onToggleBalance={() => toggleBalance("mandatory")}
+          onClick={() => navigate("/auth")}
         />
 
         <SaverCard
@@ -59,6 +61,7 @@ const SaverSelection = () => {
           balance="100000"
           showBalance={showBalances.voluntary}
           onToggleBalance={() => toggleBalance("voluntary")}
+          onClick={() => navigate("/auth")}
         />
       </div>
 
